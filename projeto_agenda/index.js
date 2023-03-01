@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const session = require('express-session');
 const bodyParser = require('body-parser');
 const routes = require('./routes');
 
@@ -16,6 +17,22 @@ app.set('views', './pages');
 //uso de rotas
 app.use(routes);
 
+//sessão
+// Midware
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+}));
+
+
+
+// create a route that reads a session variable
+app.get('/get', (req, res) => {
+    const username = req.session.username;
+    res.send(`session variable value: ${username}`);
+});
 
 
 
